@@ -1,0 +1,103 @@
+Delhivery - Logistics Data Analysis (https://www.youtube.com/watch?v=iYgABxVCBsE)
+
+Steps:
+
+1. Data Collection from kaggle:
+
+import kagglehub
+
+# Download latest version
+path = kagglehub.dataset_download("devarajv88/delhivery-logistics-dataset")
+
+print("Path to dataset files:", path)
+
+
+2. Requirement Analysis: 
+
+To find delay delivery and on time deliveries and present it in a dashboard:
+
+(PWBI)
+Delayed Shipments (%) = 
+DIVIDE(
+    COUNTROWS(FILTER(delhivery, delhivery[is_cutoff] = FALSE)),
+    [Total Shipments],
+    0
+) * 100
+
+
+On-Time Deliveries (%) = 
+DIVIDE(
+    COUNTROWS(FILTER(delhivery, delhivery[is_cutoff] = TRUE)),
+    [Total Shipments],
+    0
+) * 100
+
+
+
+3. Loading the data in Power Bi
+
+4. Starting EDA by building some KPIs.
+
+a. Total Shipments ---> DISTINCTCOUNT(shipments[uuid])
+
+b. Average Delivery Time --> average of actual time
+
+c. Delayed Shipments (%) = 
+DIVIDE(
+    COUNTROWS(FILTER(delhivery, delhivery[is_cutoff] = FALSE)),
+    [Total Shipments],
+    0
+) * 100
+
+
+d. On-Time Deliveries (%) = 
+DIVIDE(
+    COUNTROWS(FILTER(delhivery, delhivery[is_cutoff] = TRUE)),
+    [Total Shipments],
+    0
+) * 100
+
+e. is_cutoff(1=ontime, 0=delayed)
+
+--------------------------------------------
+
+
+Extract Day, Month and Year
+
+
+Create calculated columns for Day of week and Hour of Day.
+
+
+
+DAY_OF_WEEK =FORMAT(delhivery[cutoff_timestamp], "dddd")
+
+
+HOUR_OF_DAY =HOUR(delhivery[cutoff_timestamp])
+
+CutOff Compliance by Day and Time  ---> Matrix
+
+Time and Distance charts:
+
+Scatter plot comparing actual time vs osrm time
+
+Scatter plot comparing actual distance vs osrm distance.
+
+Histogram of start_to_end_scan to show processing time distribution.
+
+Bar chart: Compare the number of trips by route type(Carting vs FTL).
+
+
+
+OSRM -- Routing service based on OpenStreetMap data. 
+
+visit: http://project-osrm.org  
+
+This package enables the computation of routes, trips, isochrones & travel dist matrices
+
+
+Final Output:
+
+https://app.powerbi.com/groups/me/list?experience=power-bi (PWBI Service Dashboard)
+
+
+
